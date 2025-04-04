@@ -29,13 +29,13 @@ Api com AdonisJS configurado para buscar e apresentar os dados da API do [OpenWe
     node ace serve --watch
    ```
 
-   <video src="resources\Gravando 2025-04-04 193041.mp4" controls></video>
+   <video src="resources/Gravando 2025-04-04 193041.mp4" controls></video>
 
 ## Postman Collection
 
-Arquivo do Postman para simular as rotas: [Postman](resources\GnTest.postman_collection.json)
+Arquivo do Postman para simular as rotas: [Postman](resources/GnTest.postman_collection.json)
 
-<video src="resources\Gravando 2025-04-04 192716.mp4" controls></video>
+<video src="resources/Gravando 2025-04-04 192716.mp4" controls></video>
 
 ## Docker
 
@@ -45,7 +45,7 @@ Comando para rodar a migration dentro da imagem docker:
 docker exec -it nome_do_container node ace migration:run
 ```
 
-![Docker](resources\Captura2025-04-04.png)
+![Docker](resources/Captura2025-04-04.png)
 
 ## Rotas
 
