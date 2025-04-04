@@ -15,7 +15,7 @@ Api com AdonisJS configurado para buscar e apresentar os dados da API do [OpenWe
 1. Clone o repositório:
 
    ```bash
-   git clone [https://github.com/joao-vitor-meller/bnt](https://github.com/joao-vitor-meller/gntest.git)
+   git clone https://github.com/joao-vitor-meller/gntest.git
    cd gntest
 
    Instale as dependências:
