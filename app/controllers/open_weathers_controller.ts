@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import axios from 'axios'
 import moment from 'moment'
 import { DateTime } from 'luxon'
+import { dateValidator } from '#validators/date'
 
 import WeatherData from '#models/weather_datum'
 
@@ -29,17 +30,20 @@ type WeatherDataEntry = Partial<Omit<WeatherData, 'id' | 'createdAt' | 'updatedA
 export default class OpenWeathersController {
   public async downloadData({ request, response }: HttpContext) {
     try {
-      const { dateInit, dateEnd } = request.all()
+      const dataRequest = request.all()
+      const payload = await dateValidator.validate(dataRequest)
 
       // coordenadas de Florianópolis
       const lat = process.env.OPEN_WEATHER_LATITUDE || '-27.590471'
       const lng = process.env.OPEN_WEATHER_LONGITUDE || '-48.545129'
 
-      const startDate =
-        dateInit || `${moment().utc().startOf('day').format('YYYY-MM-DDTHH:mm:ss')}Z`
+      const startDate = payload.dateInit
+        ? `${moment(payload.dateInit).startOf('day').format('YYYY-MM-DDTHH:mm:ss')}Z`
+        : `${moment().utc().startOf('day').format('YYYY-MM-DDTHH:mm:ss')}Z`
 
-      const endDate =
-        dateEnd || `${moment().utc().add(1, 'days').endOf('day').format('YYYY-MM-DDTHH:mm:ss')}Z`
+      const endDate = payload.dateEnd
+        ? `${moment(payload.dateEnd).endOf('day').format('YYYY-MM-DDTHH:mm:ss')}Z`
+        : `${moment().utc().add(1, 'days').endOf('day').format('YYYY-MM-DDTHH:mm:ss')}Z`
 
       const url = `${process.env.OPEN_WEATHER_URL}/${startDate}--${endDate}:PT1H/t_2m:C,wind_speed_10m:ms,wind_dir_10m:d,msl_pressure:hPa,precip_1h:mm,prob_precip_1h:p,uv:idx/${lat},${lng}/json`
 
@@ -51,7 +55,6 @@ export default class OpenWeathersController {
           },
         })
         .then((dataOpenWeather) => {
-          console.log('Dados da cidade:', dataOpenWeather.data)
           return dataOpenWeather.data
         })
         .catch((error) => {
@@ -65,7 +68,7 @@ export default class OpenWeathersController {
         await this.storeDataOpenWeather(cityData)
       }
 
-      return response.status(201).json(cityData)
+      return response.status(201).json({ message: 'Download dos dados feito com sucesso!' })
     } catch (error) {
       return response.status(500).json({ error: error.message })
     }
@@ -145,9 +148,23 @@ export default class OpenWeathersController {
     }
   }
 
-  async getWeatherData() {
+  async getWeatherData({ request, response }: HttpContext) {
     try {
-      const data = await WeatherData.query().orderBy('date', 'asc').orderBy('hour', 'asc')
+      const dataRequest = request.all()
+      const payload = await dateValidator.validate(dataRequest)
+
+      const startDate = payload.dateInit
+        ? moment(payload.dateInit).format('YYYY-MM-DD')
+        : moment().format('YYYY-MM-DD')
+
+      const endDate = payload.dateEnd
+        ? moment(payload.dateEnd).format('YYYY-MM-DD')
+        : moment().add(1, 'days').format('YYYY-MM-DD')
+
+      const data = await WeatherData.query()
+        .whereBetween('date', [startDate, endDate])
+        .orderBy('date', 'asc')
+        .orderBy('hour', 'asc')
 
       const groupedData: Record<
         string,
@@ -211,7 +228,7 @@ export default class OpenWeathersController {
         days: Object.values(location.days),
       }))
     } catch (error) {
-      throw new Error(error.message)
+      return response.status(500).json({ error: error })
     }
   }
 }

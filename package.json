@@ -5,7 +5,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "node bin/server.js",
+    "start": "node ace serve --watch",
     "build": "node ace build",
     "dev": "node ace serve --hmr",
     "test": "node ace test",
@@ -55,7 +55,7 @@
     "@adonisjs/core": "^6.17.2",
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.6.1",
-    "@vinejs/vine": "^3.0.0",
+    "@vinejs/vine": "^3.0.1",
     "axios": "^1.8.4",
     "luxon": "^3.6.1",
     "moment": "^2.30.1",

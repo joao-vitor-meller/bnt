@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "9c4f149e-f677-4f52-8fe3-fbabd099f37a",
+		"name": "GnTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5971647",
+		"_collection_link": "https://gntest-5368.postman.co/workspace/b2176bd6-28b9-434d-8446-d3b324da78b7/collection/5971647-9c4f149e-f677-4f52-8fe3-fbabd099f37a?action=share&source=collection_link&creator=5971647"
+	},
+	"item": [
+		{
+			"name": "open-weather-data/download",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/open-weather-data/download",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"open-weather-data",
+						"download"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "open-weather-data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/open-weather-data?dateInit=2025-04-02&dateEnd=2025-04-02",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"open-weather-data"
+					],
+					"query": [
+						{
+							"key": "dateInit",
+							"value": "2025-04-02"
+						},
+						{
+							"key": "dateEnd",
+							"value": "2025-04-02"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
